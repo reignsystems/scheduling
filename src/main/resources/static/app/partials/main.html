@@ -1,0 +1,49 @@
+
+<div class="row bg" ng-controller="mainCtrl">
+  <div class="col-md-12">
+	<div class="custom">
+	<form name="workAddress" novalidate>
+	  <div class="form-group">
+		<label for="address">Enter address</label>
+		<input type="text" class="form-control" min="1" id="address" ng-model="getAddressValue" />
+	  </div>
+	  <button type="submit" class="btn btn-primary btn-lg" ng-click="getIPLocation()" ng-show="showSearchAddress" >{{searchAddress}}</button>
+		<button type="submit" class="btn btn-primary btn-lg" ng-click="getNextSchedule()" ng-show="showNext" >{{NextAddress}}</button>
+	  <!--<div> 
+		<p>MyLocation1: {{myLatitude}}</p>
+		<p>MyLocation2: {{myLongitude}}</p>
+	  </div>
+	  <div> 
+		<p>Enterned Location1: {{eLatitude}}</p>
+		<p>Enterned Location2: {{eLongitude}}</p>
+	  </div>-->
+		<div class="clearfix marginTop50">
+			<button type="submit" class="pull-left btn btn-success btn-lg" ng-click="startJob()" ng-show="showStart">Start Job</button>
+			<button type="submit" class="pull-left btn btn-default btn-lg" ng-click="StopJob()" ng-show="showComplete">Complete Job</button>
+			<button type="submit" class="pull-right btn btn-danger btn-lg" ng-click="cancelJob()" ng-show="showCancel">Cancel Job</button>
+		</div>
+			<div class="alert alert-success" ng-show="showDuriation">
+			  Total Duriation:  <strong>{{totalDuriation}} minutes</strong>
+			</div>
+			</br>
+			<!--<div class="form-group ">
+				<label for="address">Enter Reason for Cancel</label>
+				<textarea class="form-control" rows="3"></textarea>
+			</div> -->
+			<div class="dropdown "  ng-show="cancelReason">
+				<button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown">Select Cancel Reason
+				<span class="caret"></span></button>
+				<ul class="dropdown-menu">
+				  <li><a href="#">Machine Breakdown</a></li>
+				  <li><a href="#">No access</a></li>
+				  <li><a href="#">Door locked</a></li>
+				  <li><a href="#">Weather (Raining)</a></li>
+				  <li><a href="#">Power Outage</a></li>
+				  <li><a href="#">Other</a></li>
+				</ul>
+			</div>
+		
+	</form>
+	</div>
+  </div>
+</div>
