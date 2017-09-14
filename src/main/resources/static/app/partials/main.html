@@ -2,10 +2,15 @@
 <div class="row bg" ng-controller="mainCtrl">
   <div class="col-md-12">
 	<div class="custom">
+
 	<form name="workAddress" novalidate>
+		<div>
+			<h1 class="title">Pick your team</h1>
+			<select id="customdropdown" class="dropdown" ng-disabled= "disable" ng-model = "teamName" ng-options="teamName for teamName in teams" ng-change="selectedTeam(teamName)">{{teamName}} </select>
+		</div>
 	  <div class="form-group">
-		<label for="address">Enter address</label>
-		<input type="text" class="form-control" min="1" id="address" ng-model="getAddressValue" />
+		<label for="address" style="padding-top: 2%">Address</label>
+		  <p class="form-control" min="1" id="address">{{getAddressValue}}</p>
 	  </div>
 	  <button type="submit" class="btn btn-primary btn-lg" ng-click="getIPLocation()" ng-show="showSearchAddress" >{{searchAddress}}</button>
 		<button type="submit" class="btn btn-primary btn-lg" ng-click="getNextSchedule()" ng-show="showNext" >{{NextAddress}}</button>

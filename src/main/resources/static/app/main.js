@@ -3,10 +3,13 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter) {
         schedule = {};
     var geocoder;
     var newAddress;
+
     $scope.searchAddress = "Submit";
     $scope.NextAddress = "Next Schedule";
     $scope.showNext = true;
     $scope.showSearchAddress = false;
+    $scope.disable =  false;
+    $scope.teams = ["caleb" ,"Mo", "Srini" , "Sravan" ,"Vivek"];
     //$scope.getAddressValue = "1125 E Campbell Rd, Richardson";
 
     $scope.getIPLocation = function(){
@@ -17,16 +20,22 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter) {
         $scope.showDuriation = false;
         $scope.showComplete = false;
         $scope.showNext = false;
+        $scope.disable =  true;
         getLocation();
 
     };
 
+    $scope.selectedTeam = function (teamName) {
+        vm.teamName = teamName;
+    }
+
     $scope.getNextSchedule = function() {
         $scope.showNext = false;
         $scope.showSearchAddress = true;
+        $scope.disable =  true;
             $http({
                 method: 'GET',
-                url: '/Schedule/retrieveNextSchedule'
+                url: '/Schedule/retrieveNextSchedule/' + vm.teamName
             }).then(function successCallback(data) {
                 vm.schedule = data.data;
                 $scope.getAddressValue = vm.schedule.address;
