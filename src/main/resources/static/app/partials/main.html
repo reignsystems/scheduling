@@ -1,4 +1,5 @@
 
+
 <div class="row bg" ng-controller="mainCtrl">
   <div class="col-md-12">
 	<div class="custom">
@@ -6,14 +7,22 @@
 	<form name="workAddress" novalidate>
 		<div>
 			<h1 class="title">Pick your team</h1>
-			<select id="customdropdown" class="dropdown" ng-disabled= "disable" ng-model = "teamName" ng-options="teamName for teamName in teams" ng-change="selectedTeam(teamName)">{{teamName}} </select>
+			<select id="customdropdown" class="dropdown" ng-disabled= "disableTeam" ng-model = "teamName" ng-options="teamName for teamName in teams" ng-change="selectedTeam(teamName)">{{teamName}} </select>
 		</div>
-	  <div class="form-group">
-		<label for="address" style="padding-top: 2%">Address</label>
-		  <p class="form-control" min="1" id="address">{{getAddressValue}}</p>
-	  </div>
-	  <button type="submit" class="btn btn-primary btn-lg" ng-click="getIPLocation()" ng-show="showSearchAddress" >{{searchAddress}}</button>
-		<button type="submit" class="btn btn-primary btn-lg" ng-click="getNextSchedule()" ng-show="showNext" >{{NextAddress}}</button>
+		<div ng-show="showSchedule">
+			<div class="form-group">
+				<label for="address" style="padding-top: 2%">Address</label>
+				<p class="form-control" min="1" id="address">{{getAddressValue}}</p>
+			</div>
+		</div>
+		<div class="alert alert-danger marginTop25" ng-show="showNoAddress">
+			<strong>No Scheduled Job</strong>
+		</div>
+		<div class="clearfix marginTop25">
+		  	<button type="submit" class="btn btn-default btn-lg" ng-click="backToTeam()" ng-show="showBackToTeam" >{{selectTeamBack}}</button>
+		    <button type="submit" class="btn btn-primary btn-lg pull-right" ng-click="getIPLocation()" ng-show="showSearchAddress" >{{searchAddress}}</button>
+			<button type="submit" class="btn btn-primary btn-lg" ng-click="getNextSchedule()" ng-show="showNext" >{{NextAddress}}</button>
+		</div>	  
 	  <!--<div> 
 		<p>MyLocation1: {{myLatitude}}</p>
 		<p>MyLocation2: {{myLongitude}}</p>
@@ -22,15 +31,16 @@
 		<p>Enterned Location1: {{eLatitude}}</p>
 		<p>Enterned Location2: {{eLongitude}}</p>
 	  </div>-->
+	  	
 		<div class="clearfix marginTop50">
 			<button type="submit" class="pull-left btn btn-success btn-lg" ng-click="startJob()" ng-show="showStart">Start Job</button>
 			<button type="submit" class="pull-left btn btn-default btn-lg" ng-click="StopJob()" ng-show="showComplete">Complete Job</button>
 			<button type="submit" class="pull-right btn btn-danger btn-lg" ng-click="cancelJob()" ng-show="showCancel">Cancel Job</button>
 		</div>
-			<div class="alert alert-success" ng-show="showDuriation">
-			  Total Duriation:  <strong>{{totalDuriation}} minutes</strong>
-			</div>
-			</br>
+		<div class="alert alert-success" ng-show="showDuriation">
+		  Total Duriation:  <strong>{{totalDuriation}} minutes</strong>
+		</div>
+		</br>
 			<!--<div class="form-group ">
 				<label for="address">Enter Reason for Cancel</label>
 				<textarea class="form-control" rows="3"></textarea>
