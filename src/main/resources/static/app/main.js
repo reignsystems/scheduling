@@ -6,9 +6,10 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter) {
 
     $scope.searchAddress = "Submit";
     $scope.NextAddress = "Next Schedule";
+    $scope.selectTeamBack = "Back";
     $scope.showNext = true;
     $scope.showSearchAddress = false;
-    $scope.disable =  false;
+    $scope.showNext = false;
     $scope.teams = ["caleb" ,"Mo", "Srini" , "Sravan" ,"Vivek"];
     //$scope.getAddressValue = "1125 E Campbell Rd, Richardson";
 
@@ -20,25 +21,46 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter) {
         $scope.showDuriation = false;
         $scope.showComplete = false;
         $scope.showNext = false;
-        $scope.disable =  true;
+        $scope.disableTeam =  true;
         getLocation();
 
     };
 
     $scope.selectedTeam = function (teamName) {
         vm.teamName = teamName;
+        $scope.showNext = true;
     }
 
+    $scope.backToTeam = function(){
+    	$scope.NextAddress = "Next Schedule";
+    	$scope.showSchedule = false;
+    	$scope.showNext = true;
+    	$scope.showBackToTeam = false;
+    	$scope.showSearchAddress = false;
+    	$scope.disableTeam =  false;
+    	$scope.showNoAddress = false;
+    }
+    
     $scope.getNextSchedule = function() {
-        $scope.showNext = false;
-        $scope.showSearchAddress = true;
-        $scope.disable =  true;
+    	$scope.NextAddress = "Loading...";
+        $scope.disableTeam =  true;
             $http({
                 method: 'GET',
                 url: '/Schedule/retrieveNextSchedule/' + vm.teamName
             }).then(function successCallback(data) {
                 vm.schedule = data.data;
-                $scope.getAddressValue = vm.schedule.address;
+                
+                $scope.showNext = false;
+                if(vm.schedule != null && vm.schedule != undefined){
+                	$scope.getAddressValue = vm.schedule.address;
+	                $scope.showBackToTeam = true;
+	            	$scope.showSchedule = true;
+	            	$scope.showSearchAddress = true;
+                }else{
+                	$scope.showNoAddress = true;
+                	$scope.showBackToTeam = true;
+                }
+
             })
     }
     function getLocation() {
@@ -88,6 +110,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter) {
             if(addressLatitude == $scope.myLatitude){
                 $scope.showStart = true;
                 $scope.showSearchAddress = false;
+                $scope.showBackToTeam = false;
             }else{
                 //TODO: Change it to false..Made it true for testing purpose
                 $scope.showStart = true;
