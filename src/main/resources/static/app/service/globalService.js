@@ -24,7 +24,7 @@ app.factory("globalService", ["$http", "$q", function($http, $q){
 			data: requestParam
 		})
 		.then(function (success){
-			deferred.resolve(response);
+			deferred.resolve(success);
 		},function (error){
 		    console.log(error, 'can not get data.');
 		});
