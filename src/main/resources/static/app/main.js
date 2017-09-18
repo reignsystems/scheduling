@@ -1,9 +1,11 @@
-app.controller('mainCtrl', function($scope, $rootScope, $http, $filter) {
+app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalService) {
     var vm = this,
         schedule = {};
     var geocoder;
     var newAddress;
+    var path;
 
+    $scope.pickTeam = true;
     $scope.searchAddress = "Submit";
     $scope.NextAddress = "Next Schedule";
     $scope.selectTeamBack = "Back";
@@ -11,6 +13,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter) {
     $scope.showSearchAddress = false;
     $scope.showNext = false;
     $scope.teams = ["caleb" ,"Mo", "Srini" , "Sravan" ,"Vivek"];
+    $scope.cancelReasonText = ["Machine Breakdown" ,"No access", "Door locked" , "Weather (Raining)" ,"Power Outage", "Other"];
     //$scope.getAddressValue = "1125 E Campbell Rd, Richardson";
 
     $scope.getIPLocation = function(){
@@ -32,6 +35,10 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter) {
     }
 
     $scope.backToTeam = function(){
+    	resetAddress();
+    }
+    
+    function resetAddress(){
     	$scope.NextAddress = "Next Schedule";
     	$scope.showSchedule = false;
     	$scope.showNext = true;
@@ -39,6 +46,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter) {
     	$scope.showSearchAddress = false;
     	$scope.disableTeam =  false;
     	$scope.showNoAddress = false;
+    	$scope.showStart = false;
     }
     
     $scope.getNextSchedule = function() {
@@ -51,13 +59,14 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter) {
                 vm.schedule = data.data;
                 
                 $scope.showNext = false;
-                if(vm.schedule != null && vm.schedule != undefined){
+                if(vm.schedule != null && vm.schedule != undefined && vm.schedule.address != null){
                 	$scope.getAddressValue = vm.schedule.address;
 	                $scope.showBackToTeam = true;
 	            	$scope.showSchedule = true;
 	            	$scope.showSearchAddress = true;
                 }else{
                 	$scope.showNoAddress = true;
+                	$scope.noSchedule = "No Scheduled Job";
                 	$scope.showBackToTeam = true;
                 }
 
@@ -111,10 +120,15 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter) {
                 $scope.showStart = true;
                 $scope.showSearchAddress = false;
                 $scope.showBackToTeam = false;
+                $scope.showNoAddress = true;
+            	$scope.noSchedule = "Please Start the Job after going to the above address";
             }else{
                 //TODO: Change it to false..Made it true for testing purpose
                 $scope.showStart = true;
                 $scope.showSearchAddress = false;
+                $scope.showBackToTeam = false;
+                $scope.showNoAddress = true;
+            	$scope.noSchedule = "Please Start the Job after going to the above address";
             }
         });
         /*
@@ -131,20 +145,24 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter) {
             $scope.showSearchAddress = false;
             $scope.showNext = false;
             $scope.currentDate = new Date();
+            $scope.showNoAddress = false;
+            $scope.showBackToTeam = false;
         }
 
         $scope.cancelJob = function(){
             $scope.cancelDate = new Date();
             $scope.showStart = false;
-            $scope.showCancel = true;
+            $scope.showCancel = false;
             $scope.showComplete = false;
             $scope.cancelReason = true;
+            $scope.showReasonForCancel = true;
+            $scope.pickTeam = false;
             //$scope.showSearchAddress = true;
-            $scope.showNext = true;
+            //$scope.showNext = true;
             vm.schedule.jobStatus = "Cancelled";
             vm.schedule.startTime =  $filter('date')($scope.currentDate, 'HH:mm:ss');
             vm.schedule.endTime = $filter('date')($scope.cancelDate, 'HH:mm:ss');
-            vm.schedule.instruction =
+            vm.schedule.instruction = 
             updateSchedule();
         }
 
@@ -180,8 +198,18 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter) {
             diff /= 60;
             return Math.abs(Math.round(diff));
         }
-
-
+        
+        
+        $scope.submitCancelJob = function(cancelreasonSelection){
+        	path = '/Schedule/retrieveNextSchedule/' + cancelreasonSelection;
+        	globalService.invokeAjax('GET', path).then(function(data) {
+				$scope.testData = data;
+				resetAddress();
+				$scope.pickTeam = true;
+				$scope.showReasonForCancel = false;
+			});
+        }
+        
     }
 
 
