@@ -18,6 +18,9 @@
 		<div class="alert alert-danger marginTop25" ng-show="showNoAddress">
 			<strong>{{noSchedule}}</strong>
 		</div>
+		<div class="alert alert-success  marginTop25" ng-show="showDuriation">
+		  Total Duriation:  <strong>{{totalDuriation}} minutes</strong>
+		</div>
 		<div class="clearfix marginTop25">
 		  	<button type="submit" class="btn btn-default btn-lg" ng-click="backToTeam()" ng-show="showBackToTeam" >{{selectTeamBack}}</button>
 		    <button type="submit" class="btn btn-primary btn-lg pull-right" ng-click="getIPLocation()" ng-show="showSearchAddress" >{{searchAddress}}</button>
@@ -38,10 +41,6 @@
 			<button type="submit" class="pull-left btn btn-default btn-lg" ng-click="StopJob()" ng-show="showComplete">Complete Job</button>
 			<button type="submit" class="pull-right btn btn-danger btn-lg" ng-click="cancelJob()" ng-show="showCancel">Cancel Job</button>
 		</div>
-		<div class="alert alert-success" ng-show="showDuriation">
-		  Total Duriation:  <strong>{{totalDuriation}} minutes</strong>
-		</div>
-		</br>
 			
 		<div class="clearfix" ng-show="showReasonForCancel">
 			<h1 class="title">Select reason for cancellation</h1>

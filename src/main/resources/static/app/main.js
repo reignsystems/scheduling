@@ -47,6 +47,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
     	$scope.disableTeam =  false;
     	$scope.showNoAddress = false;
     	$scope.showStart = false;
+    	$scope.showDuriation = false;
     }
     
     $scope.getNextSchedule = function() {
@@ -176,7 +177,8 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
             $scope.showStart = false;
             $scope.showCancel = false;
             $scope.showComplete = false;
-            $scope.showNext = true;
+            //$scope.showNext = true;
+            $scope.showBackToTeam = true;
             updateSchedule();
         }
 
