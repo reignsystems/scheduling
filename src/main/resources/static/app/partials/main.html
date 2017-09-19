@@ -45,7 +45,7 @@
 		<div class="clearfix" ng-show="showReasonForCancel">
 			<h1 class="title">Select reason for cancellation</h1>
 			<select class="dropdown customdropdown" ng-model="cancelreasonSelection" ng-options="x for x in cancelReasonText" ng-change="selectJobCancel(cancelreasonSelection)"></select>
-			<button type="submit" class="btn btn-primary btn-lg pull-left marginTop25" ng-click="submitCancelJob(cancelreasonSelection)">Submit</button>
+			<button type="submit" class="btn btn-primary btn-lg pull-left marginTop25" ng-click="submitCancelJob(cancelreasonSelection)" ng-disabled="cancelReasonSelected">Submit</button>
 		</div>
 	</form>
 	</div>

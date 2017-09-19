@@ -3,28 +3,29 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
         schedule = {};
     var geocoder;
     var newAddress;
-    var path;
+    var path, count = 0;
 
     $scope.pickTeam = true;
-    $scope.searchAddress = "Submit";
+    $scope.searchAddress = "GO";
     $scope.NextAddress = "Next Schedule";
     $scope.selectTeamBack = "Back";
-    $scope.showNext = true;
+    //$scope.showNext = true;
     $scope.showSearchAddress = false;
     $scope.showNext = false;
     $scope.teams = ["caleb" ,"Mo", "Srini" , "Sravan" ,"Vivek"];
     $scope.cancelReasonText = ["Machine Breakdown" ,"No access", "Door locked" , "Weather (Raining)" ,"Power Outage", "Other"];
+    $scope.cancelReasonSelected = true;
     //$scope.getAddressValue = "1125 E Campbell Rd, Richardson";
 
     $scope.getIPLocation = function(){
         $scope.showStart = false;
         $scope.searchAddress = "Loading...";
-        $scope.showCancel = false;
-        $scope.cancelReason = false;
-        $scope.showDuriation = false;
-        $scope.showComplete = false;
-        $scope.showNext = false;
-        $scope.disableTeam =  true;
+        //$scope.showCancel = false;
+        //$scope.cancelReason = false;
+        //$scope.showDuriation = false;
+        //$scope.showComplete = false;
+        //$scope.showNext = false;
+        //$scope.disableTeam =  true;
         getLocation();
 
     };
@@ -60,9 +61,14 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
                 vm.schedule = data.data;
                 
                 $scope.showNext = false;
-                if(vm.schedule != null && vm.schedule != undefined && vm.schedule.address != null){
+                if(vm.schedule != null && vm.schedule != undefined && vm.schedule.address != null){ // && vm.schedule.address != null
                 	$scope.getAddressValue = vm.schedule.address;
-	                $scope.showBackToTeam = true;
+                	if(count == 0){
+    	                $scope.showBackToTeam = true;
+                	}else{
+                		$scope.showDuriation = false;
+                		$scope.cancelReasonSelected = true;
+                	}
 	            	$scope.showSchedule = true;
 	            	$scope.showSearchAddress = true;
                 }else{
@@ -71,7 +77,14 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
                 	$scope.showBackToTeam = true;
                 }
 
-            })
+            },function (error){
+    		    if(error != null && error.status == 404){
+    		    	$scope.showNoAddress = true;
+                	$scope.noSchedule = "System is down";
+                	$scope.showBackToTeam = true;
+                	$scope.showNext = false;
+    		    }
+    		});
     }
     function getLocation() {
        /* jQuery.post( "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAiMd6pXsVC3VZ8heTdHshhpPqpabcoW5M", function(success) {
@@ -93,19 +106,22 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
 
     function showPosition(position) {
         geoCheck = true;
-        setTimeout(function () {
+        /*setTimeout(function () {
             $scope.$apply(function () {
                 $scope.myLatitude = position.coords.latitude.toFixed(2);
                 $scope.myLongitude =  position.coords.longitude.toFixed(2);
                 $scope.searchAddress = "Submit";
             });
-        }, 2000);
+        }, 2000);*/
+        $scope.myLatitude = position.coords.latitude.toFixed(2);
+        $scope.myLongitude =  position.coords.longitude.toFixed(2);
         getAddress();
+        count = 1;
     }
 
     function getAddress(){
         geocoder = new google.maps.Geocoder();
-        newAddress = $scope.getAddressValue;
+        newAddress = $scope.getAddressValue; //"530 E Buckingham Rd, Richardson 75081"; 
 
         geocoder.geocode( { 'address': newAddress}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK)
@@ -117,20 +133,22 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
             $scope.eLatitude = addressLatitude;
             $scope.eLongitude =  addressLongitude;
 
-            if(addressLatitude == $scope.myLatitude){
-                $scope.showStart = true;
-                $scope.showSearchAddress = false;
-                $scope.showBackToTeam = false;
-                $scope.showNoAddress = true;
-            	$scope.noSchedule = "Please Start the Job after going to the above address";
-            }else{
-                //TODO: Change it to false..Made it true for testing purpose
-                $scope.showStart = true;
-                $scope.showSearchAddress = false;
-                $scope.showBackToTeam = false;
-                $scope.showNoAddress = true;
-            	$scope.noSchedule = "Please Start the Job after going to the above address";
-            }
+            setTimeout(function () {
+                $scope.$apply(function () {
+                	$scope.searchAddress = "GO";
+                	$scope.showSearchAddress = false;
+                    $scope.showBackToTeam = false;
+                    $scope.showStart = true;
+                    $scope.showNoAddress = true;
+                    
+                    if(addressLatitude == $scope.myLatitude){
+                    	$scope.noSchedule = "Please Start the Job after going to the above address";
+                    }else{
+                    	$scope.noSchedule = "Your address doesn't match with the current position, Please take screen shot of location";
+                    }
+                });
+            }, 2000);
+            
         });
         /*
          if (addressCheck && geoCheck) {
@@ -157,7 +175,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
             $scope.showComplete = false;
             $scope.cancelReason = true;
             $scope.showReasonForCancel = true;
-            $scope.pickTeam = false;
+            //$scope.pickTeam = false;
             //$scope.showSearchAddress = true;
             //$scope.showNext = true;
             vm.schedule.jobStatus = "Cancelled";
@@ -178,8 +196,16 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
             $scope.showCancel = false;
             $scope.showComplete = false;
             //$scope.showNext = true;
-            $scope.showBackToTeam = true;
-            updateSchedule();
+            $scope.showNext = true;
+            $scope.NextAddress = "Next Schedule";
+            //updateSchedule();
+            
+            vm.schedule.totalDuriation = $scope.totalDuriation;
+            data = vm.schedule;
+            path = '/Schedule/updateSchedule';
+            globalService.invokeAjax('POST', path, data).then(function(data) {
+            	vm.updated = data.data;
+			});
         }
 
         function updateSchedule() {
@@ -202,14 +228,25 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
         }
         
         
+        $scope.selectJobCancel = function(cancelreasonSelection){
+        	$scope.cancelReasonSelected = false;
+        }
+        
         $scope.submitCancelJob = function(cancelreasonSelection){
-        	path = '/Schedule/retrieveNextSchedule/' + cancelreasonSelection;
-        	globalService.invokeAjax('GET', path).then(function(data) {
-				$scope.testData = data;
-				resetAddress();
-				$scope.pickTeam = true;
-				$scope.showReasonForCancel = false;
+        	$scope.cancelDate = new Date();
+            $scope.totalDuriation = diff_minutes($scope.cancelDate, $scope.currentDate);
+        	vm.schedule.totalDuriation = $scope.totalDuriation;
+            data = vm.schedule;
+            path = '/Schedule/updateSchedule';
+            globalService.invokeAjax('POST', path, data).then(function(data) {
+            	vm.updated = data.data;$scope.showReasonForCancel = false;
+				$scope.showNext = true;
+	            $scope.NextAddress = "Next Schedule";
+	            $scope.pickTeam = true;
+	            $scope.showSchedule = false;
+	            $scope.cancelreasonSelection = '';
 			});
+            
         }
         
     }
