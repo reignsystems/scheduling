@@ -6,7 +6,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
     var path, count = 0;
 
     $scope.pickTeam = true;
-    $scope.searchAddress = "GO";
+    $scope.searchAddress = "Start Job";
     $scope.NextAddress = "Next Schedule";
     $scope.selectTeamBack = "Back";
     //$scope.showNext = true;
@@ -61,7 +61,9 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
                 vm.schedule = data.data;
                 
                 $scope.showNext = false;
-                if(vm.schedule != null && vm.schedule != undefined && vm.schedule.address != null){ // && vm.schedule.address != null
+                if(vm.schedule != null && vm.schedule != undefined){ // && vm.schedule.address != null
+                	$scope.showNoAddress = true;
+                	$scope.noSchedule = "Please Start the Job after going to the above address";
                 	$scope.getAddressValue = vm.schedule.address;
                 	if(count == 0){
     	                $scope.showBackToTeam = true;
@@ -121,7 +123,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
 
     function getAddress(){
         geocoder = new google.maps.Geocoder();
-        newAddress = $scope.getAddressValue; //"530 E Buckingham Rd, Richardson 75081"; 
+        newAddress = "530 E Buckingham Rd, Richardson 75081"; //$scope.getAddressValue; 
 
         geocoder.geocode( { 'address': newAddress}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK)
@@ -135,14 +137,14 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
 
             setTimeout(function () {
                 $scope.$apply(function () {
-                	$scope.searchAddress = "GO";
+                	$scope.searchAddress = "Start Job";
                 	$scope.showSearchAddress = false;
                     $scope.showBackToTeam = false;
-                    $scope.showStart = true;
-                    $scope.showNoAddress = true;
+                    //$scope.showStart = false;
                     
                     if(addressLatitude == $scope.myLatitude){
-                    	$scope.noSchedule = "Please Start the Job after going to the above address";
+                    	//$scope.noSchedule = "Please Start the Job after going to the above address";
+                    	startJobSchedule();
                     }else{
                     	$scope.noSchedule = "Your address doesn't match with the current position, Please take screen shot of location";
                     }
@@ -158,7 +160,18 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
          }*/
 
         $scope.startJob = function(){
-            $scope.showCancel = true;
+            /*$scope.showCancel = true;
+            $scope.showComplete = true;
+            $scope.showStart = false;
+            $scope.showSearchAddress = false;
+            $scope.showNext = false;
+            $scope.currentDate = new Date();
+            $scope.showNoAddress = false;
+            $scope.showBackToTeam = false;*/
+        }
+        
+        function startJobSchedule(){
+        	$scope.showCancel = true;
             $scope.showComplete = true;
             $scope.showStart = false;
             $scope.showSearchAddress = false;
@@ -166,6 +179,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
             $scope.currentDate = new Date();
             $scope.showNoAddress = false;
             $scope.showBackToTeam = false;
+
         }
 
         $scope.cancelJob = function(){
