@@ -61,7 +61,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
                 vm.schedule = data.data;
                 
                 $scope.showNext = false;
-                if(vm.schedule != null && vm.schedule != undefined){ // && vm.schedule.address != null
+                if(vm.schedule != null && vm.schedule != undefined && vm.schedule.address != null){ // && vm.schedule.address != null
                 	$scope.showNoAddress = true;
                 	$scope.noSchedule = "Please Start the Job after going to the above address";
                 	$scope.getAddressValue = vm.schedule.address;
@@ -75,8 +75,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
 	            	$scope.showSearchAddress = true;
                 }else{
                 	$scope.showNoAddress = true;
-                	$scope.noSchedule = "No Scheduled Job";
-                	$scope.showBackToTeam = true;
+                	$scope.noSchedule = "All Jobs are done for today";
                 }
 
             },function (error){
@@ -123,7 +122,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
 
     function getAddress(){
         geocoder = new google.maps.Geocoder();
-        newAddress = "530 E Buckingham Rd, Richardson 75081"; //$scope.getAddressValue; 
+        newAddress = $scope.getAddressValue; //"530 E Buckingham Rd, Richardson 75081";  
 
         geocoder.geocode( { 'address': newAddress}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK)
