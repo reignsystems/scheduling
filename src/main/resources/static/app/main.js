@@ -148,6 +148,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
                     }else{
                     	vm.schedule.addressMatch = 'No';
                     	$scope.noSchedule = "Your address doesn't match with the current position, Please take screen shot of location";
+                    	$scope.showStart = true;
                     }
                 });
             }, 2000);
@@ -169,6 +170,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
             $scope.currentDate = new Date();
             $scope.showNoAddress = false;
             $scope.showBackToTeam = false;*/
+        	startJobSchedule();
         }
         
         function startJobSchedule(){
