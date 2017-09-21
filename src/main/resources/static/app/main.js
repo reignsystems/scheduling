@@ -7,7 +7,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
 
     $scope.pickTeam = true;
     $scope.searchAddress = "Start Job";
-    $scope.NextAddress = "Next Schedule";
+    $scope.NextAddress = "Get Schedule";
     $scope.selectTeamBack = "Back";
     //$scope.showNext = true;
     $scope.showSearchAddress = false;
@@ -122,7 +122,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
 
     function getAddress(){
         geocoder = new google.maps.Geocoder();
-        newAddress = $scope.getAddressValue; //"530 E Buckingham Rd, Richardson 75081";  
+        newAddress = $scope.getAddressValue; //"530 E Buckingham Rd, Richardson 75081"; 
 
         geocoder.geocode( { 'address': newAddress}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK)
@@ -144,7 +144,9 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
                     if(addressLatitude == $scope.myLatitude){
                     	//$scope.noSchedule = "Please Start the Job after going to the above address";
                     	startJobSchedule();
+                    	vm.schedule.addressMatch = 'Yes';
                     }else{
+                    	vm.schedule.addressMatch = 'No';
                     	$scope.noSchedule = "Your address doesn't match with the current position, Please take screen shot of location";
                     }
                 });
@@ -191,19 +193,16 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
             //$scope.pickTeam = false;
             //$scope.showSearchAddress = true;
             //$scope.showNext = true;
-            vm.schedule.jobStatus = "Cancelled";
+           /* vm.schedule.jobStatus = "Cancelled";
             vm.schedule.startTime =  $filter('date')($scope.currentDate, 'HH:mm:ss');
             vm.schedule.endTime = $filter('date')($scope.cancelDate, 'HH:mm:ss');
             vm.schedule.instruction = 
-            updateSchedule();
+            updateSchedule();*/
         }
 
         $scope.StopJob = function(){
-            $scope.cancelDate = new Date();
-            $scope.totalDuriation = diff_minutes($scope.cancelDate, $scope.currentDate);
+        	calTotalDuriation();
             $scope.showDuriation = true;
-            vm.schedule.startTime =  $filter('date')($scope.currentDate, 'HH:mm:ss');
-            vm.schedule.endTime = $filter('date')($scope.cancelDate, 'HH:mm:ss');
             vm.schedule.jobStatus = "Completed";
             $scope.showStart = false;
             $scope.showCancel = false;
@@ -219,6 +218,13 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
             globalService.invokeAjax('POST', path, data).then(function(data) {
             	vm.updated = data.data;
 			});
+        }
+        
+        function calTotalDuriation(){
+        	$scope.cancelDate = new Date();
+            $scope.totalDuriation = diff_minutes($scope.cancelDate, $scope.currentDate);
+            vm.schedule.startTime =  $filter('date')($scope.currentDate, 'HH:mm:ss');
+            vm.schedule.endTime = $filter('date')($scope.cancelDate, 'HH:mm:ss');
         }
 
         function updateSchedule() {
@@ -246,10 +252,12 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
         }
         
         $scope.submitCancelJob = function(cancelreasonSelection){
-        	$scope.cancelDate = new Date();
-            $scope.totalDuriation = diff_minutes($scope.cancelDate, $scope.currentDate);
-        	vm.schedule.totalDuriation = $scope.totalDuriation;
-            data = vm.schedule;
+        	calTotalDuriation();
+            $scope.showDuriation = true;
+            vm.schedule.jobStatus = "Cancelled";
+            vm.schedule.startTime =  $filter('date')($scope.currentDate, 'HH:mm:ss');
+            vm.schedule.endTime = $filter('date')($scope.cancelDate, 'HH:mm:ss');
+        	data = vm.schedule;
             path = '/Schedule/updateSchedule';
             globalService.invokeAjax('POST', path, data).then(function(data) {
             	vm.updated = data.data;$scope.showReasonForCancel = false;
