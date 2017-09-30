@@ -1,7 +1,7 @@
 
-<div class="row bg" ng-controller="mainCtrl">
-  <div class="col-md-12">
-	<div class="custom">
+<div class="row" ng-controller="mainCtrl">
+  <div class="col-md-6 col-md-offset-3">
+	<div class=""> <!-- <div class="custom"> -->
 
 	<form name="workAddress" novalidate>
 	<div class="clearfix" ng-show="pickTeam">
@@ -12,7 +12,7 @@
 		<div ng-show="showSchedule">
 			<div class="form-group">
 				<label for="address" style="padding-top: 2%">Address</label>
-				<p class="form-control" min="1" id="address">{{getAddressValue}}</p>
+				<p class="form-control customHeight45" min="1" id="address">{{getAddressValue}}</p>
 			</div>
 		</div>
 		<div class="alert alert-danger marginTop25" ng-show="showNoAddress">

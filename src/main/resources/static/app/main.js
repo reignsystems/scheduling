@@ -76,6 +76,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
                 }else{
                 	$scope.showNoAddress = true;
                 	$scope.noSchedule = "All Jobs are done for today";
+                	$scope.showCloseWindow = true;
                 }
 
             },function (error){
@@ -160,7 +161,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
          } else {
          setTimeout(1500);
          }*/
-
+    }
         $scope.startJob = function(){
             /*$scope.showCancel = true;
             $scope.showComplete = true;
@@ -272,7 +273,7 @@ app.controller('mainCtrl', function($scope, $rootScope, $http, $filter, globalSe
             
         }
         
-    }
+       
 
 
 });
