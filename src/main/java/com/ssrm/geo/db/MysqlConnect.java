@@ -15,14 +15,14 @@ public class MysqlConnect {
     // init database constants
     private static final String DATABASE_DRIVER = "com.mysql.jdbc.Driver";
     //Server Configurations
-    /*private static final String DATABASE_URL = "jdbc:mysql://bestmow.db.9668947.8d4.hostedresource.net:3306/bestmow?autoReconnect=false&useSSL=false";
+    private static final String DATABASE_URL = "jdbc:mysql://bestmow.db.9668947.8d4.hostedresource.net:3306/bestmow?autoReconnect=false&useSSL=false";
     private static final String USERNAME = "bestmow";
-    private static final String PASSWORD = "Technikons1!";*/
+    private static final String PASSWORD = "Technikons1!";
 
     //Local Configurations...
-     private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/mow?autoReconnect=false&useSSL=false";
+    /*private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/mow?autoReconnect=false&useSSL=false";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "Aryan)#)%";
+    private static final String PASSWORD = "Aryan)#)%";*/
 
     private static final String MAX_POOL = "250";
 

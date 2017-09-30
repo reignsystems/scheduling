@@ -57,8 +57,8 @@ public class LoadScheduleController {
                 preparedStatement.setString(3, row.getCell(4).getStringCellValue());
                 preparedStatement.setString(4, row.getCell(5).getStringCellValue());
                 preparedStatement.setString(5, row.getCell(8).getStringCellValue());
-                preparedStatement.setString(6, row.getCell(3).getStringCellValue());
-                preparedStatement.setString(7, row.getCell(9).getStringCellValue());
+                preparedStatement.setString(6, row.getCell(3).getStringCellValue().isEmpty() ? "0:00:00" : row.getCell(3).getStringCellValue());
+                preparedStatement.setString(7, row.getCell(9).getStringCellValue().isEmpty() ? "0:00:00" : row.getCell(9).getStringCellValue());
                 preparedStatement.setString(8, null);
                 preparedStatement.setString(9, row.getCell(7).getStringCellValue());
                 preparedStatement.setInt(10, (int)row.getCell(0).getNumericCellValue());
