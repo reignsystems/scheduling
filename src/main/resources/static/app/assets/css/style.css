@@ -1,4 +1,5 @@
-body{border-top:solid 35px #00dcff;}
+body{border-top:solid 35px #00dcff;background: #333638;}
+h1,h2,h3,h4,h5,label{color:#fdd203;text-transform: uppercase;}
 .bg{background:url("../images/phone.png") no-repeat center center;height:720px;}
 .custom{width: 310px;float: none;margin: 0 auto; margin-top: 100px;}
 .marginTop50{margin-top:50px;}
